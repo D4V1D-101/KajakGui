@@ -27,8 +27,8 @@ namespace KajakGui
             Id = int.Parse(v[1]);
             HajoTipus = v[2];
             SzemelyekSzama = int.Parse(v[3]);
-            this.elvitelOraja = int.Parse(v[4]);
-            this.elvitelPerce = int.Parse(v[5]);
+            elvitelOraja = int.Parse(v[4]);
+            elvitelPerce = int.Parse(v[5]);
             VisszahozatalOraja = int.Parse(v[6]);
             VisszahozatalPerce = int.Parse(v[7]);
 

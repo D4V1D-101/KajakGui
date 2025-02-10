@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using KajakGui;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ namespace KajakGui
     public partial class MainWindow : Window
     {
         List<Kolcsonzes> kolcsonzes = new List<Kolcsonzes>();
+        List<Kolcsonzes> kolcsonzes2 = new List<Kolcsonzes>();
         public MainWindow()
         {
 
@@ -47,6 +49,11 @@ namespace KajakGui
             }
 
 
+
+
+
+
+
             #region comboboxFeltoltes
             for (int i = 1; i < 26; i++)
             {
@@ -62,30 +69,41 @@ namespace KajakGui
             {
                 HajoSzemelyekSzamaCB.Items.Add(item);
             }
+            for (int i = 0; i < 60; i++)
+            {
+                elvitelPerceCb.Items.Add(i);
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                VisszahozatalPerce.Items.Add(i);
+            }
+            for (int i = 0; i < 24; i++)
+            {
+                elvitelOrajaCb.Items.Add(i);
+            }
+            for (int i = 0; i < 24; i++)
+            {
+                VisszahozatalOrajaCb.Items.Add(i);
+            }
             #endregion
 
 
 
+
+           
+
         }
 
 
-        public bool f15(int id, string hajotipusa, int szemelyekszama)
+
+        private bool f15(int id, string hajotipusa, int szemelyekszama)
         {
-            foreach (var item in kolcsonzes)
-            {
-                if (item.Id == id || hajotipusa == hajotipusa || szemelyekszama == szemelyekszama)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-
-            }
-          
-            return true;
+            return !kolcsonzes.Any(item => item.Id == id && item.HajoTipus == hajotipusa && item.SzemelyekSzama == szemelyekszama);
         }
+
+
+
+
         public void beolvasas()
         {
             
@@ -135,9 +153,98 @@ namespace KajakGui
             eredmenyLbl.Content = $"a napi bevétel {napi} ft";
         }
 
-        private void f16_Click(object sender, RoutedEventArgs e)
-        {
+       
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (NevTextBox.Text.Contains(" "))
+            {
+                MessageBox.Show("A névben szükséges megadni 'szóköz' karaktert");
+            }
+            else
+            {
+                if (f15((int)HajodIdCb.SelectedItem, HajoTipusCb.Text, (int)HajoSzemelyekSzamaCB.SelectedItem))
+                {
+                    kolcsonzes.Add(new Kolcsonzes(
+                        NevTextBox.Text,
+                        (int)HajodIdCb.SelectedItem,
+                        HajoTipusCb.SelectedItem.ToString(),
+                        (int)HajoSzemelyekSzamaCB.SelectedItem,
+                        (int)elvitelOrajaCb.SelectedItem,
+                        (int)elvitelPerceCb.SelectedItem,
+                        (int)VisszahozatalOrajaCb.SelectedItem,
+                        (int)VisszahozatalPerce.SelectedItem
+                    ));
+
+                    MessageBox.Show("Új kölcsönzés sikeresen hozzáadva!");
+                }
+                else
+                {
+                    MessageBox.Show("Ez a hajó már szerepel az adatbázisban!");
+                }
+
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//if (!NevTextBox.Text.Contains(" "))
+//{
+//    MessageBox.Show("A névben szükséges megadni szóközt!");
+//    return;
+//}
+
+//if (!f15((int)HajodIdCb.SelectedItem, HajoTipusCb.Text, (int)HajoSzemelyekSzamaCB.SelectedItem))
+//{
+//    MessageBox.Show("Ez a hajó már szerepel az adatbázisban!");
+//    return;
+//}
+//var ujKolcsonzes = new Kolcsonzes
+//{
+//    Nev = NevTextBox.Text,
+//    Id = (int)HajodIdCb.SelectedItem,
+//    HajoTipus = HajoTipusCb.Text,
+//    SzemelyekSzama = (int)HajoSzemelyekSzamaCB.SelectedItem,
+//    elvitelOraja = (int)elvitelOrajaCb.SelectedItem,
+//    elvitelPerce = (int)elvitelPerceCb.SelectedItem,
+//    VisszahozatalOraja = (int)VisszahozatalOrajaCb.SelectedItem,
+//    VisszahozatalPerce = (int)VisszahozatalPerce.SelectedItem
+//};
+
+//kolcsonzes.Add(ujKolcsonzes);
+//MessageBox.Show("Új kölcsönzés sikeresen hozzáadva!");
+//this.DialogResult = true;
+//this.Close();
